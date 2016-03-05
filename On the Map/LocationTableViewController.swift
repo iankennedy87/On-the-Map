@@ -48,7 +48,10 @@ class LocationTableViewController: UITableViewController {
             return
         }
         
-        UIApplication.sharedApplication().openURL(url)
+        performUIUpdatesOnMain { () -> Void in
+            UIApplication.sharedApplication().openURL(url)
+        }
+        
         
     }
     
