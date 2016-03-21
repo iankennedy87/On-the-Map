@@ -34,7 +34,7 @@ class SharedClient: NSObject {
             let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
             completionHandlerForConvertData(result: nil, error: NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo), alert: nil)
         }
-        
+        print(parsedResult)
         completionHandlerForConvertData(result: parsedResult, error: nil, alert: nil)
     }
     

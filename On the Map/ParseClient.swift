@@ -43,6 +43,7 @@ class ParseClient : SharedClient {
                 sendError(error: "Your request returned a status code other than 2xx!: \(response)", alert: alert)
                 return
             }
+
             
             guard let data = data else {
                 sendError(error: "No data was returned by the request!", alert: nil)

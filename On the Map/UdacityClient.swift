@@ -47,8 +47,9 @@ class UdacityClient : SharedClient {
             guard statusCode >= 200 && statusCode <= 299 else {
                 
                 if (statusCode >= 400 && statusCode <= 499) {
-                    print(response)
                     alert = UIAlertController(title: "Login failed", message: "Account not found or invalid credentials.", preferredStyle: .Alert)
+                } else {
+                    alert = UIAlertController(title: "Login failed", message: "Reason unknown. Please try again later.", preferredStyle: .Alert)
                 }
                 
                 sendError(error: "Your attempt to login returned a status code other than 2xx", alert: alert)
