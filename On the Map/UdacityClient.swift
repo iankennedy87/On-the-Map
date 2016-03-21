@@ -37,9 +37,7 @@ class UdacityClient : SharedClient {
             
             guard (error == nil) else { // Handle error…
 
-                if (error!.code == -1001) {
-                    alert = UIAlertController(title: "Login failed", message: "The request timed out. Check your network connection", preferredStyle: .Alert)
-                }
+                alert = UIAlertController(title: "Login failed", message: "Could not connect. Check your network connection", preferredStyle: .Alert)
                 sendError(error: "Error encountered during login: \(error)", alert: alert)
                 return
             }
@@ -49,6 +47,7 @@ class UdacityClient : SharedClient {
             guard statusCode >= 200 && statusCode <= 299 else {
                 
                 if (statusCode >= 400 && statusCode <= 499) {
+                    print(response)
                     alert = UIAlertController(title: "Login failed", message: "Account not found or invalid credentials.", preferredStyle: .Alert)
                 }
                 

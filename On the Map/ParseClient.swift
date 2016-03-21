@@ -59,7 +59,7 @@ class ParseClient : SharedClient {
     
     func populateStudentLocationsArray(completionHandlerForPopulateStudentLocationsArray: (success: Bool, error: NSError?, alert: UIAlertController?) -> Void) {
         var parameters: [String:AnyObject] = [ParameterKeys.Limit : 100]
-        parameters[ParameterKeys.Order] = "-createdAt"
+        parameters[ParameterKeys.Order] = "-updatedAt"
         
         getStudentLocations(parameters, method: "/classes/StudentLocation") { (results, error, alert) -> Void in
             
