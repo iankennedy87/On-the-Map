@@ -44,10 +44,10 @@ class MapTabController: UITabBarController {
                 
                 performUIUpdatesOnMain({ () -> Void in
                     self.toggleRefreshButton()
+                    AppData.sharedInstance().temporaryMapAnnotations = []
+                    NSNotificationCenter.defaultCenter().postNotificationName("refresh", object: nil)
                 })
-                AppData.sharedInstance().temporaryMapAnnotations = []
-
-                NSNotificationCenter.defaultCenter().postNotificationName("refresh", object: nil)
+            
             }
 
     }
