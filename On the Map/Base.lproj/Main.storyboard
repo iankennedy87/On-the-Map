@@ -35,7 +35,7 @@
                                     <constraint firstAttribute="width" constant="156" id="eKb-v6-9B5"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="s%5MNQvvxFg@56L&amp;m5t2" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BKj-5O-ZVg" customClass="LoginTextField" customModule="On_the_Map" customModuleProvider="target">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BKj-5O-ZVg" customClass="LoginTextField" customModule="On_the_Map" customModuleProvider="target">
                                 <rect key="frame" x="20" y="330" width="560" height="30"/>
                                 <color key="backgroundColor" red="0.79073952879581155" green="0.720599663807997" blue="0.62564937347711236" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -78,7 +78,10 @@
                                     <action selector="signupButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rYA-LY-i3H"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="iankennedy87@gmail.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jMX-bz-Qk5" customClass="LoginTextField" customModule="On_the_Map" customModuleProvider="target">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="gDV-ke-guO">
+                                <rect key="frame" x="290" y="482" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jMX-bz-Qk5" customClass="LoginTextField" customModule="On_the_Map" customModuleProvider="target">
                                 <rect key="frame" x="20" y="285" width="560" height="30"/>
                                 <color key="backgroundColor" red="0.79073952879581155" green="0.720599663807997" blue="0.62564937347711236" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -88,9 +91,6 @@
                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="gDV-ke-guO">
-                                <rect key="frame" x="290" y="482" width="20" height="20"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.83908704188481675" green="0.4729546805735782" blue="0.24683817686770076" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -217,7 +217,7 @@
         <!--Map Tab-->
         <scene sceneID="4UI-wt-VUv">
             <objects>
-                <tabBarController title="Map Tab" id="7gm-do-Cly" customClass="MapTabController" customModule="On_the_Map" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MapTabController" title="Map Tab" id="7gm-do-Cly" customClass="MapTabController" customModule="On_the_Map" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" title="On The Map" id="kv1-cu-x3E">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="geW-1i-8w4"/>
                         <rightBarButtonItems>

@@ -92,7 +92,7 @@ class ParseClient : SharedClient {
         let jsonBody = "{\"uniqueKey\": \"\(parameters[JSONBodyKeys.UniqueKey]!)\", \"firstName\": \"\(parameters[JSONBodyKeys.FirstName]!)\", \"lastName\": \"\(parameters[JSONBodyKeys.LastName]!)\",\"mapString\": \"\(parameters[JSONBodyKeys.MapString]!)\", \"mediaURL\": \"\(parameters[JSONBodyKeys.MediaURL]!)\",\"latitude\": \(parameters[JSONBodyKeys.Latitude]!), \"longitude\": \(parameters[JSONBodyKeys.Longitude]!)}"
         print("JSON Body: \(jsonBody)")
         request.HTTPMethod = "POST"
-        request.addValue(Constants.FakeApplicationID, forHTTPHeaderField: HTTPHeaderFields.ApplicationID)
+        request.addValue(Constants.ApplicationID, forHTTPHeaderField: HTTPHeaderFields.ApplicationID)
         request.addValue(Constants.APIKey, forHTTPHeaderField: HTTPHeaderFields.APIKey)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         

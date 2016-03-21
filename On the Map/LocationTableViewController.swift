@@ -26,6 +26,11 @@ class LocationTableViewController: UITableViewController {
 
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.locationsTableView.reloadData()
+    }
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return studentLocations.count
     }

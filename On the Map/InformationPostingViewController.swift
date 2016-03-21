@@ -33,15 +33,13 @@ class InformationPostingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         activityIndicator.hidesWhenStopped = true
         setButtons([findButton, submitButton])
         
         locationTextField.delegate = textFieldDelegate
         urlTextField.delegate = textFieldDelegate
-        
-        
     }
+    
     
     @IBAction func findButtonPressed(sender: AnyObject) {
 
@@ -103,14 +101,11 @@ class InformationPostingViewController: UIViewController {
                 
                 self.mapView.setRegion(region, animated: true)
             })
-            
-            
-            
-            
+  
         }
-        
-        
+ 
     }
+    
     @IBAction func cancel(sender: UIButton) {
         
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -136,10 +131,29 @@ class InformationPostingViewController: UIViewController {
                 })
                 return
             }
-            performUIUpdatesOnMain({ () -> Void in
-                self.toggleButton(self.submitButton)
-                self.dismissViewControllerAnimated(true, completion: nil)
-            })
+            
+            ParseClient.sharedInstance().populateStudentLocationsArray { (success, error, alert) -> Void in
+                guard success else {
+                    
+                    print("Upload failed")
+                    performUIUpdatesOnMain({ () -> Void in
+                        alert!.addAction(UIAlertAction(title: "OK", style: .Default , handler: nil))
+                        self.presentViewController(alert!, animated: true, completion: nil)
+                    })
+                    return
+                }
+                
+                performUIUpdatesOnMain({ () -> Void in
+                    AppData.sharedInstance().temporaryMapAnnotations = []
+                    
+                    self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                        let controller = self.storyboard?.instantiateViewControllerWithIdentifier("MapTabController") as! MapTabController
+                        controller.refreshStudentLocations()
+                    })
+                })
+                
+            }
+            
         }
         
     }

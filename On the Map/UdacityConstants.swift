@@ -11,10 +11,6 @@ import Foundation
 extension UdacityClient {
     
     struct Constants {
-        
-        static let UserName = "iankennedy87@gmail.com"
-        static let Password = "s%5MNQvvxFg@56L&m5t2"
-        
         static let SessionURL = "https://www.udacity.com/api/session"
     }
     

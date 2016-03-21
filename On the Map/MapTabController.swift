@@ -20,10 +20,7 @@ class MapTabController: UITabBarController {
         navigationItem.rightBarButtonItems![1].action = "postLocation"
         navigationItem.leftBarButtonItem!.target = self
         navigationItem.leftBarButtonItem!.action = "logout"
-
-
     }
-    
     
     func refreshStudentLocations() {
         toggleRefreshButton()
