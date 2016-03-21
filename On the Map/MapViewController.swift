@@ -16,8 +16,8 @@ class MapViewController: UIViewController {
     
     let mapViewDelegate = MapViewDelegate()
     
-    static let object = UIApplication.sharedApplication().delegate
-    let appDelegate = object as! AppDelegate
+//    static let object = UIApplication.sharedApplication().delegate
+//    let appDelegate = object as! AppDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +42,7 @@ class MapViewController: UIViewController {
             }
             
         })
-        //generateAnnotationsFromStudentLocations()
+
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -52,22 +52,23 @@ class MapViewController: UIViewController {
     func generateAnnotationsFromStudentLocations() {
         
         var studentLocations: [StudentInformation] {
-            return (UIApplication.sharedApplication().delegate as! AppDelegate).studentInformationArray
+            return AppData.sharedInstance().studentInformationArray
         }
         
         for location in studentLocations {
             
             let annotation = StudentLocation(title: location.fullName, link: location.mediaURL, coordinate: location.coordinate)
-            appDelegate.mapAnnotations.append(annotation)
-            self.mapView.addAnnotations(appDelegate.mapAnnotations)
+            AppData.sharedInstance().mapAnnotations.append(annotation)
+            self.mapView.addAnnotations(AppData.sharedInstance().mapAnnotations)
+
             
         }
 
     }
     func refreshPins(notification: NSNotification) {
         performUIUpdatesOnMain { () -> Void in
-            
-            self.mapView.removeAnnotations(self.appDelegate.temporaryMapAnnotations)
+            self.mapView.removeAnnotations(AppData.sharedInstance().temporaryMapAnnotations)
+
             self.generateAnnotationsFromStudentLocations()
         }
     }

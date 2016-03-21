@@ -22,8 +22,7 @@ class ParseClient : SharedClient {
         
         /* 2/3. Build the URL, Configure the request */
         let request = NSMutableURLRequest(URL: parseURLFromParameters(parameters, withPathExtension: method))
-        
-        //let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation")!)
+
         request.addValue(Constants.ApplicationID, forHTTPHeaderField: HTTPHeaderFields.ApplicationID)
         request.addValue(Constants.APIKey, forHTTPHeaderField: HTTPHeaderFields.APIKey)
         
@@ -45,7 +44,6 @@ class ParseClient : SharedClient {
                 return
             }
             
-            /* GUARD: Was there any data returned? */
             guard let data = data else {
                 sendError(error: "No data was returned by the request!", alert: nil)
                 return
@@ -71,20 +69,18 @@ class ParseClient : SharedClient {
                 return
             }
             
-            //print("Results from populate student array: \(results)")
+
             guard let studentLocations = results["results"] as? [[String:AnyObject]] else {
                 print("response from student locations: \(results)")
                 return
             }
-            
-//            let object = UIApplication.sharedApplication().delegate
-//            let appDelegate = object as! AppDelegate
+
             
             
             for location in studentLocations {
                 let studentInformation : StudentInformation = StudentInformation(studentInfoDict: location)
                 AppData.sharedInstance().studentInformationArray.append(studentInformation)
-                //ppDelegate.studentInformationArray.append(studentInformation)
+
             }
             completionHandlerForPopulateStudentLocationsArray(success: true, error: nil, alert: nil)
         }

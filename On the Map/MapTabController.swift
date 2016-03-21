@@ -11,9 +11,6 @@ import UIKit
 
 class MapTabController: UITabBarController {
     
-    static let object = UIApplication.sharedApplication().delegate
-    let appDelegate = object as! AppDelegate
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,21 +26,30 @@ class MapTabController: UITabBarController {
     
     
     func refreshStudentLocations() {
-        appDelegate.studentInformationArray = []
-        appDelegate.temporaryMapAnnotations = appDelegate.mapAnnotations
-        appDelegate.mapAnnotations = []
+        toggleRefreshButton()
+        AppData.sharedInstance().studentInformationArray = []
+        AppData.sharedInstance().temporaryMapAnnotations = AppData.sharedInstance().mapAnnotations
+        AppData.sharedInstance().mapAnnotations = []
+
         NSNotificationCenter.defaultCenter().postNotificationName("refresh", object: nil)
         
             ParseClient.sharedInstance().populateStudentLocationsArray { (success, error, alert) -> Void in
                 guard success else {
+
                     print("refresh failed")
                     performUIUpdatesOnMain({ () -> Void in
+                        self.toggleRefreshButton()
                         alert!.addAction(UIAlertAction(title: "OK", style: .Default , handler: nil))
                         self.presentViewController(alert!, animated: true, completion: nil)
                     })
                     return
                 }
-                self.appDelegate.temporaryMapAnnotations = []
+                
+                performUIUpdatesOnMain({ () -> Void in
+                    self.toggleRefreshButton()
+                })
+                AppData.sharedInstance().temporaryMapAnnotations = []
+
                 NSNotificationCenter.defaultCenter().postNotificationName("refresh", object: nil)
             }
 
@@ -61,8 +67,20 @@ class MapTabController: UITabBarController {
                 print("logout failed")
                 return
             }
-            self.dismissViewControllerAnimated(true, completion: nil)
+            performUIUpdatesOnMain({ () -> Void in
+                self.dismissViewControllerAnimated(true, completion: nil)
+            })
 
+        }
+    }
+    
+    func toggleRefreshButton() {
+        let button = navigationItem.rightBarButtonItems![0]
+        if button.enabled {
+            button.enabled = false
+        }
+        else {
+            button.enabled = true
         }
     }
     

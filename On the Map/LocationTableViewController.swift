@@ -11,14 +11,15 @@ import UIKit
 class LocationTableViewController: UITableViewController {
     
     var studentLocations: [StudentInformation] {
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).studentInformationArray
+        return AppData.sharedInstance().studentInformationArray
+
     }
     
     var test = "this is the test var"
     
     @IBOutlet var locationsTableView: UITableView!
     
-    //Add button on nav bar
+
     override func viewDidLoad() {
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshData:", name: "refresh", object: nil)

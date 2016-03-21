@@ -26,9 +26,7 @@ class LoginViewController: UIViewController {
         activityIndicator.hidesWhenStopped = true
         userName.delegate = textFieldDelegate
         password.delegate = textFieldDelegate
-//        userName.leftTextMargin = 25
-//        password.leftTextMargin = 25
-        // Do any additional setup after loading the view, typically from a nib.
+
     }
 
     override func viewWillAppear(animated: Bool) {
