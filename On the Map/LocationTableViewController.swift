@@ -43,6 +43,7 @@ class LocationTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = studentLocations[indexPath.row]
+
         guard let url = NSURL(string: cell.mediaURL) else {
             print("Not a valid URL")
             return
@@ -50,6 +51,7 @@ class LocationTableViewController: UITableViewController {
         
         performUIUpdatesOnMain { () -> Void in
             UIApplication.sharedApplication().openURL(url)
+
         }
         
         

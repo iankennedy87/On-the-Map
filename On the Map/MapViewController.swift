@@ -23,8 +23,26 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         mapView.delegate = mapViewDelegate
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshPins:", name: "refresh", object: nil)
-        
-        generateAnnotationsFromStudentLocations()
+        ParseClient.sharedInstance().populateStudentLocationsArray({ (success, error, alert) -> Void in
+            
+            guard (error == nil) else {
+                print("Download failed")
+                performUIUpdatesOnMain({ () -> Void in
+                    alert!.addAction(UIAlertAction(title: "OK", style: .Default , handler: nil))
+                    self.presentViewController(alert!, animated: true, completion: nil)
+                })
+                return
+            }
+            
+            if success {
+                performUIUpdatesOnMain({ () -> Void in
+                    self.generateAnnotationsFromStudentLocations()
+                })
+                
+            }
+            
+        })
+        //generateAnnotationsFromStudentLocations()
     }
     
     override func viewWillAppear(animated: Bool) {

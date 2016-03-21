@@ -34,57 +34,52 @@ class InformationPostingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        view.bringSubviewToFront(cancelButton)
-//        view.bringSubviewToFront(toolbar)
-//        cancelButton.tintColor = customBlueColor
-        
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.hidden = true
         setButtons([findButton, submitButton])
         
         locationTextField.delegate = textFieldDelegate
         urlTextField.delegate = textFieldDelegate
         
-        urlTextField.textAlignment = NSTextAlignment.Center
-        locationTextField.textAlignment = NSTextAlignment.Center
         
     }
     
     @IBAction func findButtonPressed(sender: AnyObject) {
-        //        print("Location text field: \(locationTextField.text!)")
-        
 
+        toggleButton(findButton)
+        
         let geocoder = CLGeocoder()
         
         geocoder.geocodeAddressString(locationTextField.text!) { (placemarks, error) -> Void in
-            self.activityIndicator.startAnimating()
+
             guard (error == nil) else {
                 
                 performUIUpdatesOnMain({ () -> Void in
+                    self.toggleButton(self.findButton)
                     let alert = UIAlertController(title: nil, message: "Geocoding of address failed", preferredStyle: .Alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
                     self.presentViewController(alert, animated: true, completion: nil)
-                    self.activityIndicator.stopAnimating()
                     print("error geocoding address")
                 })
 
                 return
             }
             
-            //            print("Placemark: \(placemarks)")
-            
             guard let placemark = placemarks![0] as CLPlacemark? else {
                 print("No placemarks found")
                 return
             }
+            
             performUIUpdatesOnMain({ () -> Void in
-                self.activityIndicator.stopAnimating()
+                self.toggleButton(self.findButton)
+            })
+            
+            performUIUpdatesOnMain({ () -> Void in
+
                 
                 let coordinate = placemark.location?.coordinate
                 self.coordinate = coordinate
                 
                 let annotation = MKPlacemark(coordinate: coordinate!, addressDictionary: nil)
-                //            print("Annotation: \(annotation)")
                 self.mapView.addAnnotation(annotation)
                 
                 self.mapView.centerCoordinate = coordinate!
@@ -123,7 +118,9 @@ class InformationPostingViewController: UIViewController {
     }
     
     @IBAction func submitButtonPressed(sender: UIButton) {
-        
+        view.bringSubviewToFront(activityIndicator)
+        toggleButton(submitButton)
+
         var jsonParameters = UdacityClient.sharedInstance().jsonParameters
         jsonParameters[ParseClient.JSONBodyKeys.MapString] = locationTextField.text!
         jsonParameters[ParseClient.JSONBodyKeys.MediaURL] = urlTextField.text!
@@ -132,19 +129,39 @@ class InformationPostingViewController: UIViewController {
         
         ParseClient.sharedInstance().postStudentLocation(jsonParameters) { (results, error, alert) -> Void in
             guard (error == nil) else {
-                print("post student location failed")
+                performUIUpdatesOnMain({ () -> Void in
+                    alert!.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                    self.presentViewController(alert!, animated: true, completion: nil)
+                    self.toggleButton(self.submitButton)
+                })
                 return
             }
-            self.dismissViewControllerAnimated(true, completion: nil)
+            performUIUpdatesOnMain({ () -> Void in
+                self.toggleButton(self.submitButton)
+                self.dismissViewControllerAnimated(true, completion: nil)
+            })
         }
         
     }
 
     func setButtons(buttons: [UIButton]) {
         for button in buttons {
-            
             button.layer.cornerRadius = 10
             button.clipsToBounds = true
         }
     }
+    
+    func toggleButton(button: UIButton) {
+        if button.enabled {
+            button.enabled = false
+            button.alpha = 0.75
+            activityIndicator.startAnimating()
+        }
+        else {
+            button.enabled = true
+            button.alpha  = 1
+            activityIndicator.stopAnimating()
+        }
+    }
+
 }

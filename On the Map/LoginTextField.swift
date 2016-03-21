@@ -11,7 +11,7 @@ import UIKit
 
 
 class LoginTextField : UITextField {
-    var leftTextMargin : CGFloat = 0.0
+    var leftTextMargin : CGFloat = 25.0
     
     override func textRectForBounds(bounds: CGRect) -> CGRect {
         var newBounds = bounds

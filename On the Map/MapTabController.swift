@@ -34,14 +34,18 @@ class MapTabController: UITabBarController {
         appDelegate.mapAnnotations = []
         NSNotificationCenter.defaultCenter().postNotificationName("refresh", object: nil)
         
-        ParseClient.sharedInstance().populateStudentLocationsArray { (success, error, alert) -> Void in
-            guard success else {
-                print("refresh failed")
-                return
+            ParseClient.sharedInstance().populateStudentLocationsArray { (success, error, alert) -> Void in
+                guard success else {
+                    print("refresh failed")
+                    performUIUpdatesOnMain({ () -> Void in
+                        alert!.addAction(UIAlertAction(title: "OK", style: .Default , handler: nil))
+                        self.presentViewController(alert!, animated: true, completion: nil)
+                    })
+                    return
+                }
+                self.appDelegate.temporaryMapAnnotations = []
+                NSNotificationCenter.defaultCenter().postNotificationName("refresh", object: nil)
             }
-            self.appDelegate.temporaryMapAnnotations = []
-            NSNotificationCenter.defaultCenter().postNotificationName("refresh", object: nil)
-        }
 
     }
     
@@ -51,12 +55,8 @@ class MapTabController: UITabBarController {
     }
     
     func logout() {
-        UdacityClient.sharedInstance().logoutOfUdacitySession { (result, error) -> Void in
-//            guard let data = result as NSData? else {
-//                print("Error turning result to NSData")
-//                return
-//            }
-            //print(NSString(data: data, encoding: NSUTF8StringEncoding))
+        UdacityClient.sharedInstance().logoutOfUdacitySession { (result, error, alert) -> Void in
+
             guard (error == nil) else {
                 print("logout failed")
                 return

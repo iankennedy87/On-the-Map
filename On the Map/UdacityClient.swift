@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class UdacityClient : NSObject {
+class UdacityClient : SharedClient {
     
     var session = NSURLSession.sharedSession()
     var sessionId: String? = nil
@@ -18,8 +18,9 @@ class UdacityClient : NSObject {
     var lastName: String?
     var jsonParameters = [String: AnyObject]()
 
+    typealias udacityCompletionHandlerClosure = ((result: AnyObject!, error: NSError?, alert: UIAlertController?) -> Void)
     
-    func createUdacitySession(username: String, password: String, completionHandlerForCreateSession: (result: AnyObject!, error: NSError?, alert: UIAlertController?) -> Void) -> Void {
+    private func createUdacitySession(username: String, password: String, completionHandlerForCreateSession: udacityCompletionHandlerClosure) -> Void {
         
         let request = NSMutableURLRequest(URL: NSURL(string: Constants.SessionURL)!)
         request.HTTPMethod = "POST"
@@ -28,20 +29,18 @@ class UdacityClient : NSObject {
         request.HTTPBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
         
         
-        let task = session.dataTaskWithRequest(request) { data, response, error in
+        let task = session.dataTaskWithRequest(request) { (data, response, error) in
+            
             var alert: UIAlertController? = nil
-            func sendError(error: String, alert: UIAlertController?) {
-                print(error)
-                let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandlerForCreateSession(result: nil, error: NSError(domain: "createUdacitySession", code: 1, userInfo: userInfo), alert: alert)
-            }
+            
+            let sendError = self.getSendError("createUdacitySession", completionHandler: completionHandlerForCreateSession)
             
             guard (error == nil) else { // Handle error…
-                //var alert: UIAlertController? = nil
+
                 if (error!.code == -1001) {
                     alert = UIAlertController(title: "Login failed", message: "The request timed out. Check your network connection", preferredStyle: .Alert)
                 }
-                sendError("Error encountered during login: \(error)", alert: alert)
+                sendError(error: "Error encountered during login: \(error)", alert: alert)
                 return
             }
             
@@ -53,18 +52,16 @@ class UdacityClient : NSObject {
                     alert = UIAlertController(title: "Login failed", message: "Account not found or invalid credentials.", preferredStyle: .Alert)
                 }
                 
-                sendError("Your request returned a status code other than 2xx", alert: alert)
+                sendError(error: "Your attempt to login returned a status code other than 2xx", alert: alert)
                 return
             }
             
             guard let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) as NSData? else {
-                sendError("Error converting JSON to NSData object", alert: nil)
+                sendError(error: "Error converting JSON to NSData object", alert: nil)
                 return
             }
             
             self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForCreateSession)
-            //completionHandlerForLogin(result: newData, error: nil)
-            //print(NSString(data: newData, encoding: NSUTF8StringEncoding))
 
         }
         
@@ -72,15 +69,55 @@ class UdacityClient : NSObject {
         
     }
     
+    private func getPublicUserData(uniqueKey: String, completionHandlerForGetPublicUserData: udacityCompletionHandlerClosure) -> Void {
+        
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/\(uniqueKey)")!)
+        
+        let task = session.dataTaskWithRequest(request) { (data, response, error) in
+            
+            var alert: UIAlertController? = nil
+            
+            let sendError = self.getSendError("getPublicUserData", completionHandler: completionHandlerForGetPublicUserData)
+            
+            guard (error == nil) else { // Handle error...
+                alert = UIAlertController(title: nil, message: "Error occurred while retrieving public user data", preferredStyle: .Alert)
+                sendError(error: "Error getting public data", alert: alert)
+                return
+            }
+            
+            let statusCode = (response as? NSHTTPURLResponse)?.statusCode
+            
+            guard statusCode >= 200 && statusCode <= 299 else {
+                
+                if (statusCode >= 400 && statusCode <= 499) {
+                    alert = UIAlertController(title: nil, message: "Error occurred while retrieving public user data", preferredStyle: .Alert)
+                }
+                
+                sendError(error: "Your request returned a status code other than 2xx", alert: alert)
+                return
+            }
+            
+            guard let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) as NSData? else {
+                return
+            }
+            
+            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: { (result, error, alert) -> Void in
+                
+                completionHandlerForGetPublicUserData(result: result, error: nil, alert: nil)
+                
+            })
+        }
+        task.resume()
+    }
+    
     func loginAndRetrieveUserData(username: String, password: String, completionHandlerForLogin: (success: Bool, error: NSError?, alert: UIAlertController?) -> Void) {
+
         createUdacitySession(username, password: password) { (result, error, alert) -> Void in
             
             guard (error == nil) else {
-                print("Error occurred during login")
                 completionHandlerForLogin(success: false, error: error, alert: alert)
                 return
             }
-            //print("Result from completion handler: \(result!["account"]!)")
 
             guard let accountInfo = result["account"] as? [String:AnyObject] else {
                 print("Error getting account info")
@@ -131,30 +168,8 @@ class UdacityClient : NSObject {
         }
     }
     
-    func getPublicUserData(uniqueKey: String, completionHandlerForGetPublicUserData: (results: AnyObject!, error: NSError?, alert: UIAlertController?) -> Void) {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/\(uniqueKey)")!)
-
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            guard error == nil else { // Handle error...
-                print("error getting public data")
-                return
-            }
-            
-            let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
-            //print("User Data: \(NSString(data: newData, encoding: NSUTF8StringEncoding))")
-            
-            self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: { (result, error, alert) -> Void in
-                guard (error == nil) else {
-                    return
-                }
-                //print("Result from getPublicUserData: \(result)")
-                completionHandlerForGetPublicUserData(results: result, error: nil, alert: nil)
-            })
-        }
-        task.resume()
-    }
-    
-    func logoutOfUdacitySession(completionHandlerForLogout: (result: NSData, error: NSError?) -> Void) -> Void {
+    func logoutOfUdacitySession(completionHandlerForLogout: udacityCompletionHandlerClosure) -> Void {
+        
         let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
         request.HTTPMethod = "DELETE"
         var xsrfCookie: NSHTTPCookie? = nil
@@ -166,29 +181,35 @@ class UdacityClient : NSObject {
             request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
         }
         let session = NSURLSession.sharedSession()
+        
         let task = session.dataTaskWithRequest(request) { data, response, error in
-            if error != nil { // Handle error…
+            
+            var alert: UIAlertController? = nil
+            let sendError = self.getSendError("logoutOfUdacitySession", completionHandler: completionHandlerForLogout)
+            
+            guard (error == nil) else {
+                alert = UIAlertController(title: nil, message: "Error logging out of Udacity", preferredStyle: .Alert)
+                sendError(error: "Error logging out of Udacity", alert: alert)
                 return
             }
+            
+            let statusCode = (response as? NSHTTPURLResponse)?.statusCode
+            guard statusCode >= 200 && statusCode <= 299 else {
+
+            if (statusCode >= 400 && statusCode <= 499) {
+                alert = UIAlertController(title: nil, message: "Error occurred while retrieving public user data", preferredStyle: .Alert)
+            }
+            
+                sendError(error: "Your request returned a status code other than 2xx", alert: alert)
+                return
+            }
+        
             let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
-            completionHandlerForLogout(result: newData, error: nil)
+            completionHandlerForLogout(result: newData, error: nil, alert: nil)
         }
         task.resume()
     }
-    
-    private func convertDataWithCompletionHandler(data: NSData, completionHandlerForConvertData: (result: AnyObject!, error: NSError?, alert: UIAlertController?) -> Void) {
-        
-        var parsedResult: AnyObject!
-        do {
-            parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-        } catch {
-            let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-            completionHandlerForConvertData(result: nil, error: NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo), alert: nil)
-        }
-        //print("Login result: \(parsedResult)")
-        completionHandlerForConvertData(result: parsedResult, error: nil, alert: nil)
-    }
-    
+
     class func sharedInstance() -> UdacityClient {
         struct Singleton {
             static var sharedInstance = UdacityClient()

@@ -21,7 +21,7 @@ class TextFieldDelegate: NSObject, UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        return true;
+        return true
     }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {

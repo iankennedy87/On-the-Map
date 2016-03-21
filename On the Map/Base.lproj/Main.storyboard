@@ -304,9 +304,6 @@ today?</string>
                                     <action selector="submitButtonPressed:" destination="6FL-za-XdR" eventType="touchUpInside" id="bZe-UF-gwk"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="sMA-8j-Lcu">
-                                <rect key="frame" x="290" y="485" width="20" height="20"/>
-                            </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AAu-zf-FKO">
                                 <rect key="frame" x="532" y="16" width="48" height="40"/>
                                 <state key="normal" title="Cancel"/>
@@ -314,6 +311,9 @@ today?</string>
                                     <action selector="cancel:" destination="6FL-za-XdR" eventType="touchUpInside" id="jQi-po-B2k"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="sMA-8j-Lcu">
+                                <rect key="frame" x="276" y="445" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -335,8 +335,10 @@ today?</string>
                             <constraint firstAttribute="leadingMargin" secondItem="lcA-rS-1GQ" secondAttribute="leading" constant="20" id="Yov-Hn-Eld"/>
                             <constraint firstAttribute="trailingMargin" secondItem="lcA-rS-1GQ" secondAttribute="trailing" constant="-20" id="bXu-VD-43o"/>
                             <constraint firstItem="Y2h-of-RHO" firstAttribute="top" secondItem="zu7-Iz-IZ9" secondAttribute="bottom" id="ba4-gM-WJu"/>
+                            <constraint firstItem="tQQ-9k-qDV" firstAttribute="top" secondItem="sMA-8j-Lcu" secondAttribute="bottom" constant="8" id="ckm-51-x1Y"/>
                             <constraint firstItem="AA9-rM-ToA" firstAttribute="top" secondItem="tQQ-9k-qDV" secondAttribute="top" id="eaX-TJ-gVb"/>
                             <constraint firstItem="Fv2-tX-FYD" firstAttribute="top" secondItem="kba-C1-sX2" secondAttribute="bottom" constant="44" id="lBI-fP-BWW"/>
+                            <constraint firstItem="sMA-8j-Lcu" firstAttribute="centerX" secondItem="lcA-rS-1GQ" secondAttribute="centerX" id="tA8-jG-B22"/>
                             <constraint firstItem="zu7-Iz-IZ9" firstAttribute="leading" secondItem="r6K-gJ-In9" secondAttribute="leadingMargin" constant="-20" id="taV-Za-P4w"/>
                             <constraint firstItem="Y2h-of-RHO" firstAttribute="leading" secondItem="r6K-gJ-In9" secondAttribute="leadingMargin" constant="-20" id="vuO-hi-nNp"/>
                             <constraint firstItem="AA9-rM-ToA" firstAttribute="centerX" secondItem="r6K-gJ-In9" secondAttribute="centerX" id="zzg-fC-Qg5"/>

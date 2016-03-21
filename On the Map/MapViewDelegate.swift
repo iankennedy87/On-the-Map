@@ -40,6 +40,9 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
                 print("String could not be converted to URL")
                 return
             }
-            UIApplication.sharedApplication().openURL(url)
+            
+            performUIUpdatesOnMain { () -> Void in
+                UIApplication.sharedApplication().openURL(url)
+            }
     }
 }

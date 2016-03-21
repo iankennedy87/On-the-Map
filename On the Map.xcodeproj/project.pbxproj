@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		0043FCFF1C826FF9002532BB /* InformationPostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0043FCFE1C826FF9002532BB /* InformationPostingViewController.swift */; };
 		0043FD441C82C25B002532BB /* TextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0043FD431C82C25B002532BB /* TextFieldDelegate.swift */; };
-		006CDE411C8AB37E00C8B77E /* SharedClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006CDE401C8AB37E00C8B77E /* SharedClient.swift */; };
+		006CDE431C8AFC5900C8B77E /* SharedClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006CDE421C8AFC5900C8B77E /* SharedClient.swift */; };
+		008820271CA0768C0053AFDB /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008820261CA0768C0053AFDB /* AppData.swift */; };
 		00A5D8281C79565A0030C8B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A5D8271C79565A0030C8B8 /* AppDelegate.swift */; };
 		00A5D82A1C79565A0030C8B8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A5D8291C79565A0030C8B8 /* LoginViewController.swift */; };
 		00A5D82D1C79565A0030C8B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00A5D82B1C79565A0030C8B8 /* Main.storyboard */; };
@@ -55,7 +56,8 @@
 /* Begin PBXFileReference section */
 		0043FCFE1C826FF9002532BB /* InformationPostingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationPostingViewController.swift; sourceTree = "<group>"; };
 		0043FD431C82C25B002532BB /* TextFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldDelegate.swift; sourceTree = "<group>"; };
-		006CDE401C8AB37E00C8B77E /* SharedClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedClient.swift; sourceTree = "<group>"; };
+		006CDE421C8AFC5900C8B77E /* SharedClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedClient.swift; sourceTree = "<group>"; };
+		008820261CA0768C0053AFDB /* AppData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		00A5D8241C79565A0030C8B8 /* On the Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On the Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00A5D8271C79565A0030C8B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		00A5D8291C79565A0030C8B8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -146,15 +148,13 @@
 		00A5D8261C79565A0030C8B8 /* On the Map */ = {
 			isa = PBXGroup;
 			children = (
-				00BFA7A71C838E5700413524 /* View */,
-				00A5D8271C79565A0030C8B8 /* AppDelegate.swift */,
 				00F97FF81C811FDE00A13903 /* GCDBlackBox.swift */,
+				00A5D8271C79565A0030C8B8 /* AppDelegate.swift */,
+				00BFA7A71C838E5700413524 /* View */,
 				00A5D8571C7BF89C0030C8B8 /* Model */,
 				00F97FE11C7D36DA00A13903 /* Controller */,
 				0043FD421C82C1FC002532BB /* Assets */,
 				00A5D8331C79565A0030C8B8 /* Info.plist */,
-				0043FD431C82C25B002532BB /* TextFieldDelegate.swift */,
-				00BFA7A51C838DF700413524 /* LoginTextField.swift */,
 			);
 			path = "On the Map";
 			sourceTree = "<group>";
@@ -180,6 +180,7 @@
 		00A5D8571C7BF89C0030C8B8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				008820261CA0768C0053AFDB /* AppData.swift */,
 				00F97FEC1C7D68BA00A13903 /* StudentInformation.swift */,
 				00F97FEE1C7EA36400A13903 /* StudentInformationConstants.swift */,
 				00F97FF21C7FF32100A13903 /* StudentLocation.swift */,
@@ -191,7 +192,7 @@
 		00A5D8581C7BF8A90030C8B8 /* Clients */ = {
 			isa = PBXGroup;
 			children = (
-				006CDE401C8AB37E00C8B77E /* SharedClient.swift */,
+				006CDE421C8AFC5900C8B77E /* SharedClient.swift */,
 				00A5D85C1C7BF9E30030C8B8 /* Parse */,
 				00A5D8591C7BF8B30030C8B8 /* Udacity */,
 			);
@@ -230,6 +231,7 @@
 		00BFA7A71C838E5700413524 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				00BFA7A51C838DF700413524 /* LoginTextField.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -238,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				00A5D8291C79565A0030C8B8 /* LoginViewController.swift */,
+				0043FD431C82C25B002532BB /* TextFieldDelegate.swift */,
 				00F97FE21C7D36EF00A13903 /* MapViewController.swift */,
 				00F97FF01C7FEF8400A13903 /* MapViewDelegate.swift */,
 				00F97FE41C7D3B3300A13903 /* LocationTableViewController.swift */,
@@ -383,10 +386,10 @@
 			files = (
 				00F97FF51C811CE800A13903 /* MapTabController.swift in Sources */,
 				00F97FF31C7FF32100A13903 /* StudentLocation.swift in Sources */,
-				006CDE411C8AB37E00C8B77E /* SharedClient.swift in Sources */,
 				00A5D85B1C7BF8C40030C8B8 /* UdacityClient.swift in Sources */,
 				00A5D82A1C79565A0030C8B8 /* LoginViewController.swift in Sources */,
 				00F97FE51C7D3B3300A13903 /* LocationTableViewController.swift in Sources */,
+				008820271CA0768C0053AFDB /* AppData.swift in Sources */,
 				00A5D8281C79565A0030C8B8 /* AppDelegate.swift in Sources */,
 				0043FD441C82C25B002532BB /* TextFieldDelegate.swift in Sources */,
 				00F97FF91C811FDE00A13903 /* GCDBlackBox.swift in Sources */,
@@ -395,6 +398,7 @@
 				00A5D8561C7BF7E20030C8B8 /* UdacityConstants.swift in Sources */,
 				00F97FED1C7D68BA00A13903 /* StudentInformation.swift in Sources */,
 				00F97FF11C7FEF8400A13903 /* MapViewDelegate.swift in Sources */,
+				006CDE431C8AFC5900C8B77E /* SharedClient.swift in Sources */,
 				00F97FE91C7D595800A13903 /* ParseClient.swift in Sources */,
 				00F97FEF1C7EA36400A13903 /* StudentInformationConstants.swift in Sources */,
 				00F97FE71C7D594E00A13903 /* ParseConstants.swift in Sources */,

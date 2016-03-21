@@ -26,8 +26,8 @@ class LoginViewController: UIViewController {
         activityIndicator.hidesWhenStopped = true
         userName.delegate = textFieldDelegate
         password.delegate = textFieldDelegate
-        userName.leftTextMargin = 25
-        password.leftTextMargin = 25
+//        userName.leftTextMargin = 25
+//        password.leftTextMargin = 25
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -48,7 +48,6 @@ class LoginViewController: UIViewController {
                 
                 performUIUpdatesOnMain({ () -> Void in
                     self.toggleLoginButton()
-                    self.activityIndicator.stopAnimating()
                     alert!.addAction(UIAlertAction(title: "OK", style: .Default , handler: nil))
                     self.presentViewController(alert!, animated: true, completion: nil)
                 })
@@ -56,36 +55,20 @@ class LoginViewController: UIViewController {
             }
             
             guard success else {
+                
                 print("Login unsuccessful")
+                performUIUpdatesOnMain({ () -> Void in
+                    self.toggleLoginButton()
+                    alert!.addAction(UIAlertAction(title: "OK", style: .Default , handler: nil))
+                    self.presentViewController(alert!, animated: true, completion: nil)
+                })
                 return
             }
             
-
-            //print("User Key: \(UdacityClient.sharedInstance().userKey!), First Name: \(UdacityClient.sharedInstance().firstName!), Last Name: \(UdacityClient.sharedInstance().lastName!)")
-            
-            ParseClient.sharedInstance().populateStudentLocationsArray({ (success, error, alert) -> Void in
-                
-                guard (error == nil) else {
-                    print("Download failed")
-                    performUIUpdatesOnMain({ () -> Void in
-                        self.toggleLoginButton()
-                        self.activityIndicator.stopAnimating()
-                        alert!.addAction(UIAlertAction(title: "OK", style: .Default , handler: nil))
-                        self.presentViewController(alert!, animated: true, completion: nil)
-                    })
-                    return
-                }
-                
-                if success {
-                    performUIUpdatesOnMain({ () -> Void in
-                        self.toggleLoginButton()
-                        self.activityIndicator.stopAnimating()
-                        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MapNavigationController") as! UINavigationController
-                        self.presentViewController(controller, animated: true, completion: nil)
-                    })
-
-                }
-                
+            performUIUpdatesOnMain({ () -> Void in
+                self.toggleLoginButton()
+                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MapNavigationController") as! UINavigationController
+                self.presentViewController(controller, animated: true, completion: nil)
             })
             
         }
@@ -105,11 +88,13 @@ class LoginViewController: UIViewController {
     func toggleLoginButton() {
         if loginButton.enabled {
             loginButton.enabled = false
-            loginButton.alpha = 0.5
+            loginButton.alpha = 0.75
+            activityIndicator.startAnimating()
         }
         else {
             loginButton.enabled = true
             loginButton.alpha  = 1
+            activityIndicator.stopAnimating()
         }
     }
     
